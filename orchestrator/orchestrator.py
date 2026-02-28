@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 load_dotenv("../.env")
 
+RESEARCHER_URL = os.getenv("RESEARCHER_URL")
+WRITER_URL = os.getenv("WRITER_URL")
+
 app = FastAPI()
 
 class GraphState(TypedDict, total=False):
@@ -55,4 +58,5 @@ async def run_agent(payload: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
