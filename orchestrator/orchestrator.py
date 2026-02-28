@@ -21,14 +21,14 @@ class GraphState(TypedDict, total=False):
 
 def call_researcher(state: GraphState):
     print("--- Calling Researcher (8001) ---")
-    response = requests.post("http://127.0.0.1:8001/research", json=state)
+    response = requests.post(f"{RESEARCHER_URL}/research", json=state)
     if response.status_code != 200:
         raise Exception(f"Researcher Error: {response.text}")
     return response.json()
 
 def call_writer(state: GraphState):
     print("--- Calling Writer (8002) ---")
-    response = requests.post("http://127.0.0.1:8002/write", json=state)
+    response = requests.post(f"{WRITER_URL}/write", json=state)
     if response.status_code != 200:
         raise Exception(f"Writer Error: {response.text}")
     return response.json()
