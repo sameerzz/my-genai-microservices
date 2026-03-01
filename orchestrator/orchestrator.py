@@ -5,6 +5,16 @@ from fastapi import FastAPI, HTTPException
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from dotenv import load_dotenv
+import logging
+import google.cloud.logging
+
+# Initialize the GCP Logging Client
+client = google.cloud.logging.Client()
+# Connects standard Python logging to Google Cloud
+client.setup_logging()
+
+# Example: Log when the Orchestrator starts
+logging.info("Orchestrator Service is starting up..")
 
 load_dotenv()
 load_dotenv("../.env")
@@ -59,4 +69,5 @@ async def run_agent(payload: dict):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
+    logging.info("Orchestrator Service is going live")
     uvicorn.run(app, host="0.0.0.0", port=port)
