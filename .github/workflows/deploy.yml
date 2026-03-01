@@ -46,6 +46,7 @@ jobs:
           # We also inject your Gemini API Key here
           env_vars: |-
             LANGCHAIN_API_KEY=${{ secrets.LANGCHAIN_API_KEY }}
+            LANGCHAIN_TRACING_V2=true
             LANGCHAIN_PROJECT=${{ secrets.LANGCHAIN_PROJECT }}
             GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
 
@@ -68,7 +69,14 @@ jobs:
           service: orchestrator-service
           source: ./orchestrator
           region: ${{ env.REGION }}
-          flags: '--allow-unauthenticated'
+          flags: |
+            --allow-unauthenticated
+            --container=app
+            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/orchestrator:latest
+            --port=8080
+            --container=prometheus-collector
+            --image=gcr.io/cloud-monitoring-compute/prometheus-sidecar:latest
+            
           # THE MAPPING: This is how the URLs reach your Python code!
           env_vars: |-
             RESEARCHER_URL=${{ needs.deploy-nodes.outputs.researcher_url }}
