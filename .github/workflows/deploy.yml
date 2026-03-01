@@ -69,14 +69,7 @@ jobs:
           service: orchestrator-service
           source: ./orchestrator
           region: ${{ env.REGION }}
-          flags: |
-            --allow-unauthenticated
-            --container=app
-            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/orchestrator:latest
-            --port=8080
-            --container=prometheus-collector
-            --image=gcr.io/cloud-monitoring-compute/prometheus-sidecar:latest
-            
+          flags: '--allow-unauthenticated'
           # THE MAPPING: This is how the URLs reach your Python code!
           env_vars: |-
             RESEARCHER_URL=${{ needs.deploy-nodes.outputs.researcher_url }}
